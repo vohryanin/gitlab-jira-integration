@@ -1,0 +1,36 @@
+### Commons
+https://jira-test.sigma-it.ru/
+issue CO-1
+
+
+### Get issue
+https://jira-test.sigma-it.ru/rest/api/2/issue/CO-1
+
+
+### Search
+https://jira-test.sigma-it.ru/rest/api/2/search?project=Client%online
+
+### Edit issue    PUT /rest/api/2/issue/{issueIdOrKey}
+
+
+### Assign PUT /rest/api/2/issue/{issueIdOrKey}/assignee
+
+### Add comment    POST /rest/api/2/issue/{issueIdOrKey}/comment
+
+### Get transitions     GET /rest/api/2/issue/{issueIdOrKey}/transitions
+https://jira-test.sigma-it.ru/rest/api/2/issue/CO-1/transitions
+
+### Do transition    POST /rest/api/2/issue/{issueIdOrKey}/transitions
+https://jira-test.sigma-it.ru/rest/api/2/issue/CO-1/transitions
+https://jira.sigma-it.ru/rest/api/2/issue/CO-4027/transitions
+
+
+### Get all workflows     GET /rest/api/2/workflow
+https://jira-test.sigma-it.ru/rest/api/2/workflow
+
+
+### переводить задачу из статуса "TO DO" в статус "In progress"
+curl -u vxryanin:bw9lgKXd -X POST --data '{"transition":{"id":"11"}}' -H "Content-Type: application/json" https://jira-test.sigma-it.ru/rest/api/2/issue/CO-1/transitions
+
+
+curl -u username:password -X POST --data '{ "update": { "comment": [ { "add": { "body": "Bug has been fixed." } } ] }, "transition": { "id": "2" } }' -H "Content-Type: application/json" http://jira/rest/api/2/issue/TEST-1/transitions
