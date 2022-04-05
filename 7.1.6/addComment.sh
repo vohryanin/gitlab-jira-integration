@@ -15,16 +15,12 @@ export issueIdOrKey="CO-4027"
 export API_METHOD="issue/${issueIdOrKey}/?fields=components"
 export REGEX='\"name\":\"Front\"'
 
-#https://jira.sigma-it.ru/rest/api/2/component/20532"
-
-#curl -u ${USERNAME}:${PASSWORD} -X ${HTTP_METHOD} -H "${HEADER}" ${BASE_URL}/${API_NAME}/${API_METHOD}
-#curl -s -u ${USERNAME}:${PASSWORD} -X ${HTTP_METHOD} ${BASE_URL}/${API_NAME}/${API_METHOD} | grep -o "${REGEX}"
-
 ISSUE_COMPONENTS=`curl -s -u ${USERNAME}:${PASSWORD} -X ${HTTP_METHOD} ${BASE_URL}/${API_NAME}/${API_METHOD} | grep -o "${REGEX}"`
 
 if [ "${ISSUE_COMPONENTS}X" != "X" ]
 then
   echo "ISSUE_COMPONENTS = ${ISSUE_COMPONENTS}"
+  ### Добавляем коммент
   echo "Adding comment ..."
   export HTTP_METHOD="POST"
   export DATA='{
@@ -34,8 +30,16 @@ then
   export API_METHOD="issue/${issueIdOrKey}/comment"
   curl -u ${USERNAME}:${PASSWORD} -X ${HTTP_METHOD} --data "${DATA}" -H "${HEADER}" ${BASE_URL}/${API_NAME}/${API_METHOD}
 
-
-
+  ### Меняем исполнителя
+  echo
+  echo "Setting assignee..."
+  export ASSIGNEE="gitlab"
+  export HTTP_METHOD="PUT"
+  export DATA="{
+                     \"name\": \"${ASSIGNEE}\"
+                 }"
+  export API_METHOD="issue/${issueIdOrKey}/assignee"
+  curl -u ${USERNAME}:${PASSWORD} -X ${HTTP_METHOD} --data "${DATA}" -H "${HEADER}" ${BASE_URL}/${API_NAME}/${API_METHOD}
 else
   echo "ISSUE_COMPONENTS = ${ISSUE_COMPONENTS}"
   echo "Adding comment"
